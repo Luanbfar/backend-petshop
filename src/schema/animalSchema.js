@@ -13,7 +13,6 @@ const animalSchema = joi.object({
         "string.empty": "Data de nascimento é obrigatória.",
         "any.required": "Data de nascimento é obrigatória.",
     }),
-    foto_animal: joi.string().allow('').optional(),
     cpf_dono: joi.string().required().messages({
         'any.required': 'O campo CPF dono é obrigatório.',
     }),

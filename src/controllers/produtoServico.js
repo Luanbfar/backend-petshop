@@ -1,5 +1,5 @@
 const knex = require("../database/conexao");
-const { verificarDadosNulos } = require("../utils/verificacaoDadosNullos");
+const { verificarDadosNulos } = require("../utils/verificacaoDadosNulos");
 
 require("dotenv").config();
 
@@ -31,7 +31,6 @@ const editarServico = async (req, res) => {
 
   try {
 
-    // Cria um objeto com os dados não nulos ou vazios
     const dadosAtualizados = {
         nome,
         valor,

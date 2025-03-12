@@ -6,7 +6,7 @@ const agendamentoSchema = joi.object({
     "string.empty": "CPF é obrigatório.",
     "any.required": "CPF é obrigatório.",
   }),
-  servicos: joi.array().allow('').optional(),
+  servicos: joi.array().allow("").optional(),
   data_marcacao: joi.string().min(8).required().messages({
     "string.empty": "Data do serviço é obrigatória.",
     "any.required": "Data do serviço é obrigatória.",
@@ -19,10 +19,10 @@ const agendamentoSchema = joi.object({
     "string.empty": "Tipo é obrigatório.",
     "any.required": "Tipo é obrigatória.",
   }),
-  animal_id:joi.number().required().messages({
+  animal_id: joi.number().required().messages({
     "any.required": "Animal id é obrigatório.",
   }),
-  confirmacao_agendamento:joi.string().allow('').optional()
+  confirmacao_agendamento: joi.boolean().optional(),
 });
 
 module.exports = agendamentoSchema;

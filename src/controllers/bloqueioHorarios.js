@@ -1,5 +1,5 @@
 const knex = require("../database/conexao");
-const { verificarDadosNulos } = require("../utils/verificacaoDadosNullos");
+const { verificarDadosNulos } = require("../utils/verificacaoDadosNulos");
 
 const bloquearHorario = async (req, res) => {
 
