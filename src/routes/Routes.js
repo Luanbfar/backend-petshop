@@ -61,6 +61,9 @@ const validarRequisicao = require("../middleware/validarRequisicao");
 
 const router = express();
 
+router.get("/", (req, res) => {
+  res.send("API Petshop");
+});
 router.post("/api/usuario", validarRequisicao(usuarioSchema), cadastrarUsuarioNaoAutenticado);
 router.post("/api/login", validarRequisicao(loginSchema), login);
 
