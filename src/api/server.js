@@ -6,6 +6,8 @@ const router = require("../routes/Routes");
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  persistedQueries: false,
+  cache: "bounded",
   context: ({ req }) => {
     const authorization = req.headers.authorization || "";
     return { user: null };
