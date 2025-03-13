@@ -45,18 +45,23 @@ const cadastrarUsuarioAutenticado = async (req, res) => {
 };
 
 const cadastrarUsuarioNaoAutenticado = async (req, res) => {
-  let { nome, senha, cpf_cnpj, celular, cidade, rua, bairro, numero, cep } = req.body;
+  let { nome, email, senha, cpf_cnpj, celular, cidade, rua, bairro, numero, cep } = req.body;
 
   try {
     const cpfExiste = await knex("usuario").select("*").where("cpf_cnpj", cpf_cnpj).first();
+    const emailExiste = await knex("usuario").select("*").where("email", celular).first();
     const celularExiste = await knex("usuario").select("*").where("celular", celular).first();
 
     if (cpfExiste) {
-      return res.status(400).json({ mensagem: "Usuário com este cpf, foi cadastrado." });
+      return res.status(400).json({ mensagem: "Usuário com este cpf já foi cadastrado." });
+    }
+
+    if (emailExiste) {
+      return res.status(400).json({ mensagem: "Usuário com este email já foi cadastrado." });
     }
 
     if (celularExiste) {
-      return res.status(400).json({ mensagem: "Usuário com este celular, foi cadastrado." });
+      return res.status(400).json({ mensagem: "Usuário com este celular já foi cadastrado" });
     }
 
     const senhaCriptografada = await bcrypt.hash(senha, 10);
@@ -64,6 +69,7 @@ const cadastrarUsuarioNaoAutenticado = async (req, res) => {
     const usuario = await knex("usuario")
       .insert({
         nome,
+        email,
         senha: senhaCriptografada,
         cpf_cnpj,
         celular,
@@ -88,7 +94,7 @@ const cadastrarUsuarioNaoAutenticado = async (req, res) => {
 const editarUsuario = async (req, res) => {
   const { id } = req.params;
 
-  const { nome, senha, cpf_cnpj, celular, cidade, rua, bairro, numero, cargo, cep } = req.body;
+  const { nome, email, senha, cpf_cnpj, celular, cidade, rua, bairro, numero, cargo, cep } = req.body;
 
   try {
     if (cpf_cnpj) {
@@ -98,6 +104,14 @@ const editarUsuario = async (req, res) => {
         return res
           .status(400)
           .json({ mensagem: "O número de CPF ou CNPJ informado já está sendo utilizado por outro usuário." });
+      }
+    }
+
+    if (email) {
+      const emailExiste = await knex("usuario").select("*").where("email", cpf_cnpj).whereNot("id", id);
+
+      if (emailExiste.length > 0) {
+        return res.status(400).json({ mensagem: "O email informado já está sendo utilizado por outro usuário." });
       }
     }
 
@@ -120,6 +134,7 @@ const editarUsuario = async (req, res) => {
     // Cria um objeto com os dados não nulos ou vazios
     const dadosAtualizados = {
       nome,
+      email,
       senha: senhaCriptografada,
       cpf_cnpj,
       celular,

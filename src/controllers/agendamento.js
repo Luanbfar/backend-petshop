@@ -9,7 +9,7 @@ const TEMPO_G = 120;
 const CARGO = "Colaborador";
 
 const agendar = async (req, res) => {
-  const { data_marcacao, cpf_cnpj, hora_inicio, servicos, tipo, confirmacao_agendamento, animal_id } = req.body;
+  const { data_marcacao, cpf_cnpj, hora_inicio, servicos, tamanho, confirmacao_agendamento, animal_id } = req.body;
 
   try {
     const cliente = await knex("usuario").select("*").where("cargo", "Cliente").andWhere({ cpf_cnpj }).first();
@@ -29,7 +29,7 @@ const agendar = async (req, res) => {
     const [horas, minutos] = hora_inicio.split(":").map(Number);
     let totalMinutos = horas * 60 + minutos;
 
-    totalMinutos = tempoPorTamanho(tipo, totalMinutos, quantidadeServico, TEMPO_P_M, TEMPO_G);
+    totalMinutos = tempoPorTamanho(tamanho, totalMinutos, quantidadeServico, TEMPO_P_M, TEMPO_G);
     if (!totalMinutos) {
       return res.status(400).json({ mensagem: "Tamanho do animal não identificado." });
     }
@@ -67,7 +67,7 @@ const agendar = async (req, res) => {
         hora_inicio,
         hora_termino,
         servicos,
-        tipo,
+        tamanho,
         confirmacao_agendamento,
         valor,
       })
@@ -100,7 +100,7 @@ const excluiAgendamento = async (req, res) => {
 const editarAgendamento = async (req, res) => {
   const { id } = req.params;
 
-  const { data_marcacao, hora_inicio, servicos, tipo, confirmacao_agendamento, animal_id } = req.body;
+  const { data_marcacao, hora_inicio, servicos, tamanho, confirmacao_agendamento, animal_id } = req.body;
 
   try {
     if (animal_id) {
@@ -129,17 +129,17 @@ const editarAgendamento = async (req, res) => {
 
       if (!servicos) {
         quantidadeServico = agendamentoAtual.servicos.length;
-        if (!tipo) {
-          totalMinutos = tempoPorTamanho(agendamentoAtual.tipo, totalMinutos, quantidadeServico, TEMPO_P_M, TEMPO_G);
-        } else if (tipo) {
-          totalMinutos = tempoPorTamanho(tipo, totalMinutos, quantidadeServico, TEMPO_P_M, TEMPO_G);
+        if (!tamanho) {
+          totalMinutos = tempoPorTamanho(agendamentoAtual.tamanho, totalMinutos, quantidadeServico, TEMPO_P_M, TEMPO_G);
+        } else if (tamanho) {
+          totalMinutos = tempoPorTamanho(tamanho, totalMinutos, quantidadeServico, TEMPO_P_M, TEMPO_G);
         }
       } else if (servicos) {
         quantidadeServico = servicos.length;
-        if (!tipo) {
-          totalMinutos = tempoPorTamanho(agendamentoAtual.tipo, totalMinutos, quantidadeServico, TEMPO_P_M, TEMPO_G);
-        } else if (tipo) {
-          totalMinutos = tempoPorTamanho(tipo, totalMinutos, quantidadeServico, TEMPO_P_M, TEMPO_G);
+        if (!tamanho) {
+          totalMinutos = tempoPorTamanho(agendamentoAtual.tamanho, totalMinutos, quantidadeServico, TEMPO_P_M, TEMPO_G);
+        } else if (tamanho) {
+          totalMinutos = tempoPorTamanho(tamanho, totalMinutos, quantidadeServico, TEMPO_P_M, TEMPO_G);
         }
       }
 
@@ -179,7 +179,7 @@ const editarAgendamento = async (req, res) => {
       data_marcacao,
       hora_inicio,
       hora_termino,
-      tipo,
+      tamanho,
       servicos,
       confirmacao_agendamento,
       animal_id,

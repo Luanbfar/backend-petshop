@@ -1,7 +1,7 @@
 const joi = require("joi");
 
 const horariosBloqueadosSchema = joi.object({
-    data_bloqueio: joi.string().min(10).required().messages({
+  data_bloqueio: joi.string().min(10).required().messages({
     "string.min": "O campo Data Bloqueio deve ser preenchido corretamente",
     "any.required": "O campo Data Bloqueio é obrigatório.",
     "string.empty": "O campo Data Bloqueio é obrigatório.",
@@ -13,7 +13,7 @@ const horariosBloqueadosSchema = joi.object({
   hora_termino: joi.string().required().messages({
     "string.empty": "Hora de termino é obrigatória.",
     "any.required": "Hora de termino é obrigatória.",
-  })
+  }),
 });
 
 module.exports = horariosBloqueadosSchema;

@@ -1,4 +1,26 @@
-const app = require("./app.js");
-const PORT = process.env.PORT || 3001;
+const typeDefs = require("../schema/pagamentoSchema");
+const resolvers = require("../resolvers/pagamentoResolver");
+const { ApolloServer } = require("apollo-server-express");
+const router = require("../routes/Routes");
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: ({ req }) => {
+    const authorization = req.headers.authorization || "";
+    return { user: null };
+  },
+});
+
+async function startServer(app) {
+  try {
+    await server.start();
+    server.applyMiddleware({ app, path: "/pagamentos" });
+    app.use(router);
+  } catch (error) {
+    console.log(error);
+    throw new Error("Erro ao iniciar o servidor");
+  }
+}
+
+module.exports = startServer;
