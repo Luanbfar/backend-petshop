@@ -1,7 +1,7 @@
 const verificarPorteAnimal = (peso) => {
   let porte;
 
-  if (peso >= 8) {
+  if (peso <= 8) {
     porte = "Pequeno";
   } else if (peso > 8 && peso <= 20) {
     porte = "Médio";
