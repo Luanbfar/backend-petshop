@@ -15,9 +15,9 @@ const agendamentoSchema = joi.object({
     "string.empty": "Hora do serviço é obrigatória.",
     "any.required": "Hora do serviço é obrigatória.",
   }),
-  tipo: joi.string().required().messages({
-    "string.empty": "Tipo é obrigatório.",
-    "any.required": "Tipo é obrigatória.",
+  tamanho: joi.string().required().messages({
+    "string.empty": "Tamanho é obrigatório.",
+    "any.required": "Tamanho é obrigatório.",
   }),
   animal_id: joi.number().required().messages({
     "any.required": "Animal id é obrigatório.",
