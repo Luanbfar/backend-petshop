@@ -6,6 +6,11 @@ const usuarioSchema = joi.object({
     "any.required": "O campo nome é obrigatório.",
     "string.empty": "O campo nome é obrigatório.",
   }),
+  email: joi.string().email().required().messages({
+    "string.email": "O campo email deve ser um email válido.",
+    "any.required": "O campo email é obrigatório.",
+    "string.empty": "O campo email é obrigatório.",
+  }),
   senha: joi.string().min(4).required().messages({
     "any.required": "O campo senha é obrigatório.",
     "string.empty": "O campo senha é obrigatório.",
